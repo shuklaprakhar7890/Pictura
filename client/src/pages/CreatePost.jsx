@@ -17,14 +17,12 @@ const CreatePost = () => {
   const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSurpriseMe = () => {
     const randomPrompt = getRandomPrompt(form.prompt);
     setForm({ ...form, prompt: randomPrompt });
-  }
+  };
 
   const generateImage = async () => {
     if (form.prompt) {
@@ -41,7 +39,7 @@ const CreatePost = () => {
         });
 
         const data = await response.json();
-        setForm({ ...form, photo:`data:image/jpeg;base64,${data.photo}`});
+        setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
       } catch (err) {
         alert(err);
       } finally {
@@ -52,18 +50,18 @@ const CreatePost = () => {
     }
   };
 
-   const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-     if (form.prompt && form.photo) {
+    if (form.prompt && form.photo) {
       setLoading(true);
       try {
-        const response = await fetch("https://ai-image-generator-y2br.onrender.com/api/v1/post", {
+        const response = await fetch('https://ai-image-generator-y2br.onrender.com/api/v1/post', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(form),
+          body: JSON.stringify({ ...form }),
         });
 
         await response.json();
@@ -92,7 +90,7 @@ const CreatePost = () => {
             labelName="Your Name"
             type="text"
             name="name"
-            placeholder=" Prakhar Shukla"
+            placeholder="Ex., Prakhar Shukla"
             value={form.name}
             handleChange={handleChange}
           />
@@ -101,7 +99,7 @@ const CreatePost = () => {
             labelName="Prompt"
             type="text"
             name="prompt"
-            placeholder="a sea otter with a pearl earring by Johannes Vermeer"
+            placeholder="An Impressionist oil painting of sunflowers in a purple vase…"
             value={form.prompt}
             handleChange={handleChange}
             isSurpriseMe
